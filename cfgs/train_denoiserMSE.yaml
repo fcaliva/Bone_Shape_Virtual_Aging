@@ -1,0 +1,69 @@
+common:
+  seed: 1234
+  vis_GPU: '0'
+  log_path: 'experiments/training/logs/'
+  save_path: 'experiments/training/ckpt/'
+  print_freq: 50
+  qsub: 0
+
+data_train:
+  data_root: 'pickle_files/train.pickle'
+  batch_size: 4
+  im_dims: !!python/tuple [224, 224]
+  crop : !!python/tuple [0, 0, 0, 0]
+  num_classes: 1
+  idx_classes : [0]
+  num_channels: 3
+  normalization_file: ' '
+  evaluate_mode: False
+  input_type: 'float32'
+  target_type: 'float32'
+  predict_remodeling: False
+  add_noise: True
+
+data_val:
+  data_root : 'pickle_files/val.pickle'
+  batch_size: 4
+  im_dims: !!python/tuple [224, 224]
+  crop : !!python/tuple [0, 0, 0, 0]
+  num_classes: 1
+  idx_classes : [0]
+  num_channels: 3
+  normalization_file: ' '
+  evaluate_mode: False
+  input_type: 'float32'
+  target_type: 'float32'
+  predict_remodeling: False
+  add_noise: True
+
+dataLoader_folder: 'dataLoader'
+learn:
+  max_steps: 500000 # instead of epochs
+  lr : 0.00001
+  optimizer: 'adam'
+  loss: 'mse_loss'
+  metrics: 'mae_mse_rmse_ssim'
+  monitor: 'mae'
+  weights: [1]
+  num_classes: 1
+  dataloader: 'data_loader'
+  comp: ['spherical_enc']
+  key_slice: !!python/tuple [0, 0, 0]
+  patience: 15 # in number of validation runs
+  keep_prob : 0.95
+  val_freq : 150 # in steps
+
+model_folder: VNet
+model: 'VNet'
+model_params:
+# github.com/MiguelMonteiro/VNet-Tensorflow
+  num_classes: 1
+  num_channels : 16
+  num_levels : 4
+  num_convolutions : !!python/tuple [3, 4, 3, 4]
+  bottom_convolutions : 2
+
+pretrain:
+  only_infer: False
+  flag: False
+  ckpt: ''
